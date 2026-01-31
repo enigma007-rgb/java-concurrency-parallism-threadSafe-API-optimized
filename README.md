@@ -452,7 +452,6 @@ public class StringQuestionService {
 ===========================================
 
 
-```
 # StringQuestionService Performance Optimizations
 
 ## Key Performance Improvements

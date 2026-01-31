@@ -1,3 +1,346 @@
+Unoptimized version :
+
+```java
+import java.util.*;
+
+public class StringQuestionService {
+    
+    private Scanner scanner;
+    
+    public StringQuestionService() {
+        this.scanner = new Scanner(System.in);
+    }
+    
+    public void reverseString() {
+        System.out.println("\n=== Reverse String ===");
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+        
+        String reversed = new StringBuilder(str).reverse().toString();
+        System.out.println("Reversed: " + reversed);
+    }
+    
+    public void checkPalindrome() {
+        System.out.println("\n=== Check Palindrome ===");
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+        
+        String cleaned = str.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+        String reversed = new StringBuilder(cleaned).reverse().toString();
+        
+        boolean isPalindrome = cleaned.equals(reversed);
+        System.out.println("Is palindrome: " + isPalindrome);
+    }
+    
+    public void countVowelsConsonants() {
+        System.out.println("\n=== Count Vowels and Consonants ===");
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+        
+        int vowels = 0, consonants = 0;
+        String vowelSet = "aeiouAEIOU";
+        
+        for (char c : str.toCharArray()) {
+            if (Character.isLetter(c)) {
+                if (vowelSet.indexOf(c) != -1) {
+                    vowels++;
+                } else {
+                    consonants++;
+                }
+            }
+        }
+        
+        System.out.println("Vowels: " + vowels + ", Consonants: " + consonants);
+    }
+    
+    public void removeWhiteSpaces() {
+        System.out.println("\n=== Remove White Spaces ===");
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+        
+        String result = str.replaceAll("\\s+", "");
+        System.out.println("Without spaces: " + result);
+    }
+    
+    public void convertStringToInteger() {
+        System.out.println("\n=== Convert String to Integer ===");
+        System.out.print("Enter a numeric string: ");
+        String str = scanner.nextLine();
+        
+        try {
+            int number = Integer.parseInt(str.trim());
+            System.out.println("Integer value: " + number);
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Not a valid integer");
+        }
+    }
+    
+    public void firstNonRepeatingChar() {
+        System.out.println("\n=== First Non-Repeating Character ===");
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+        
+        Map<Character, Integer> charCount = new LinkedHashMap<>();
+        
+        for (char c : str.toCharArray()) {
+            charCount.put(c, charCount.getOrDefault(c, 0) + 1);
+        }
+        
+        for (Map.Entry<Character, Integer> entry : charCount.entrySet()) {
+            if (entry.getValue() == 1) {
+                System.out.println("First non-repeating character: " + entry.getKey());
+                return;
+            }
+        }
+        
+        System.out.println("No non-repeating character found");
+    }
+    
+    public void findDuplicateChars() {
+        System.out.println("\n=== Find Duplicate Characters ===");
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+        
+        Map<Character, Integer> charCount = new HashMap<>();
+        
+        for (char c : str.toCharArray()) {
+            charCount.put(c, charCount.getOrDefault(c, 0) + 1);
+        }
+        
+        System.out.print("Duplicate characters: ");
+        boolean found = false;
+        for (Map.Entry<Character, Integer> entry : charCount.entrySet()) {
+            if (entry.getValue() > 1) {
+                System.out.print(entry.getKey() + "(" + entry.getValue() + ") ");
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.print("None");
+        }
+        System.out.println();
+    }
+    
+    public void checkAnagram() {
+        System.out.println("\n=== Check Anagram ===");
+        System.out.print("Enter first string: ");
+        String str1 = scanner.nextLine();
+        System.out.print("Enter second string: ");
+        String str2 = scanner.nextLine();
+        
+        String s1 = str1.replaceAll("\\s+", "").toLowerCase();
+        String s2 = str2.replaceAll("\\s+", "").toLowerCase();
+        
+        char[] arr1 = s1.toCharArray();
+        char[] arr2 = s2.toCharArray();
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+        
+        boolean isAnagram = Arrays.equals(arr1, arr2);
+        System.out.println("Are anagrams: " + isAnagram);
+    }
+    
+    public void stringCompression() {
+        System.out.println("\n=== String Compression ===");
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+        
+        if (str.isEmpty()) {
+            System.out.println("Compressed: " + str);
+            return;
+        }
+        
+        StringBuilder compressed = new StringBuilder();
+        int count = 1;
+        
+        for (int i = 1; i < str.length(); i++) {
+            if (str.charAt(i) == str.charAt(i - 1)) {
+                count++;
+            } else {
+                compressed.append(str.charAt(i - 1)).append(count);
+                count = 1;
+            }
+        }
+        compressed.append(str.charAt(str.length() - 1)).append(count);
+        
+        String result = compressed.length() < str.length() ? compressed.toString() : str;
+        System.out.println("Compressed: " + result);
+    }
+    
+    public void longestSubstringWithoutRepeating() {
+        System.out.println("\n=== Longest Substring Without Repeating ===");
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+        
+        Map<Character, Integer> charIndex = new HashMap<>();
+        int maxLength = 0;
+        int start = 0;
+        String longestSubstring = "";
+        
+        for (int end = 0; end < str.length(); end++) {
+            char currentChar = str.charAt(end);
+            
+            if (charIndex.containsKey(currentChar)) {
+                start = Math.max(start, charIndex.get(currentChar) + 1);
+            }
+            
+            charIndex.put(currentChar, end);
+            
+            if (end - start + 1 > maxLength) {
+                maxLength = end - start + 1;
+                longestSubstring = str.substring(start, end + 1);
+            }
+        }
+        
+        System.out.println("Longest substring: " + longestSubstring + " (length: " + maxLength + ")");
+    }
+    
+    public void rotateStringCheck() {
+        System.out.println("\n=== Rotate String Check ===");
+        System.out.print("Enter original string: ");
+        String str1 = scanner.nextLine();
+        System.out.print("Enter rotated string: ");
+        String str2 = scanner.nextLine();
+        
+        boolean isRotation = str1.length() == str2.length() && 
+                            (str1 + str1).contains(str2);
+        
+        System.out.println("Is rotation: " + isRotation);
+    }
+    
+    public void containsOnlyDigits() {
+        System.out.println("\n=== Contains Only Digits ===");
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+        
+        boolean onlyDigits = !str.isEmpty() && str.matches("\\d+");
+        System.out.println("Contains only digits: " + onlyDigits);
+    }
+    
+    public void findAllPermutations(String str) {
+        System.out.println("\n=== Find All Permutations ===");
+        if (str == null || str.isEmpty()) {
+            System.out.print("Enter a string: ");
+            str = scanner.nextLine();
+        }
+        
+        List<String> permutations = new ArrayList<>();
+        generatePermutations("", str, permutations);
+        
+        System.out.println("Total permutations: " + permutations.size());
+        System.out.println("Permutations: " + permutations);
+    }
+    
+    private void generatePermutations(String prefix, String remaining, List<String> result) {
+        int n = remaining.length();
+        if (n == 0) {
+            result.add(prefix);
+        } else {
+            for (int i = 0; i < n; i++) {
+                generatePermutations(prefix + remaining.charAt(i),
+                                   remaining.substring(0, i) + remaining.substring(i + 1),
+                                   result);
+            }
+        }
+    }
+    
+    public void reverseWordsInSentence() {
+        System.out.println("\n=== Reverse Words in Sentence ===");
+        System.out.print("Enter a sentence: ");
+        String str = scanner.nextLine();
+        
+        String[] words = str.trim().split("\\s+");
+        StringBuilder reversed = new StringBuilder();
+        
+        for (int i = words.length - 1; i >= 0; i--) {
+            reversed.append(words[i]);
+            if (i > 0) {
+                reversed.append(" ");
+            }
+        }
+        
+        System.out.println("Reversed sentence: " + reversed.toString());
+    }
+    
+    public void longestPalindromicSubstring() {
+        System.out.println("\n=== Longest Palindromic Substring ===");
+        System.out.print("Enter a string: ");
+        String str = scanner.nextLine();
+        
+        if (str.isEmpty()) {
+            System.out.println("Longest palindrome: ");
+            return;
+        }
+        
+        String longest = "";
+        
+        for (int i = 0; i < str.length(); i++) {
+            // Check for odd length palindromes
+            String palindrome1 = expandAroundCenter(str, i, i);
+            if (palindrome1.length() > longest.length()) {
+                longest = palindrome1;
+            }
+            
+            // Check for even length palindromes
+            String palindrome2 = expandAroundCenter(str, i, i + 1);
+            if (palindrome2.length() > longest.length()) {
+                longest = palindrome2;
+            }
+        }
+        
+        System.out.println("Longest palindrome: " + longest + " (length: " + longest.length() + ")");
+    }
+    
+    private String expandAroundCenter(String str, int left, int right) {
+        while (left >= 0 && right < str.length() && str.charAt(left) == str.charAt(right)) {
+            left--;
+            right++;
+        }
+        return str.substring(left + 1, right);
+    }
+    
+    public static void main(String[] args) {
+        StringQuestionService service = new StringQuestionService();
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("===========================================");
+        System.out.println("   String Questions Service - Demo");
+        System.out.println("===========================================");
+        
+        service.reverseString();
+        service.checkPalindrome();
+        service.countVowelsConsonants();
+        service.removeWhiteSpaces();
+        service.convertStringToInteger();
+        service.firstNonRepeatingChar();
+        service.findDuplicateChars();
+        service.checkAnagram();
+        service.stringCompression();
+        service.longestSubstringWithoutRepeating();
+        service.rotateStringCheck();
+        service.containsOnlyDigits();
+        
+        System.out.print("\nEnter a string for permutations (small string recommended): ");
+        String permStr = scanner.nextLine();
+        service.findAllPermutations(permStr);
+        
+        service.reverseWordsInSentence();
+        service.longestPalindromicSubstring();
+        
+        System.out.println("\n===========================================");
+        System.out.println("   All functions executed successfully!");
+        System.out.println("===========================================");
+        
+        scanner.close();
+    }
+}
+
+```
+
+---------
+
+Optimized version :
+
 ```java
 
 import java.util.*;

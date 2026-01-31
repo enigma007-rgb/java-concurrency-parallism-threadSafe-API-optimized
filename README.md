@@ -690,7 +690,7 @@ Run with: `-Xms2g -Xmx2g -XX:+UseG1GC`
 
 Test with varying input sizes: 10, 100, 1000, 10000 characters
 
-```
+
 
 ## Major Optimizations:
 
